@@ -5,8 +5,12 @@
  */
 package servlets;
 
+import DAO.Acompte;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,8 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  * @author Benjamin
  */
 @WebServlet(name = "NewServlet", urlPatterns = {"/NewServlet"})
-public class AtestServlet extends HttpServlet {
-
+public class Add extends HttpServlet {
+@PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
+    EntityManager em;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,15 +39,11 @@ public class AtestServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet NewServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet NewServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            Acompte a = new Acompte();
+             a.setMontantAccorde((Double) request.getAttribute("Montant"));
+             a.setType((int) request.getAttribute("Type"));
+             em.persist(a);
+             em.flush();
         }
     }
 

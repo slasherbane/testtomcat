@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/mavenproject1" tldValidation="false">
-<Resource name="jdbc/test"
-auth="Container"
-type="javax.sql.DataSource"
-minimumIdle="1"
-maximumPoolSize="20"
-connectionTimeout="150000"
-idleTimeout="30000"
-maxLifeTime="60000"
-dataSource.user="root"
-dataSource.password="Slasherbane2!"
-driverClassName="com.mysql.jdbc.Driver"
-username="root"
-password="Slasherbane2!"
-url="jdbc:mysql://localhost:3306/daren?autoReconnect=false&amp;userSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
-<ResourceLink 
-global="jdbc/test"
-name="jdbc/test"
-type="javax.sql.DataSource"
-/>
+    <Resource name="jdbc/test"
+              auth="Container"
+              type="javax.sql.DataSource"
+              minimumIdle="1"
+              maximumPoolSize="10"
+              connectionTimeout="150"
+              idleTimeout="300"
+              maxLifeTime="600"
+              dataSource.user="root"
+              dataSource.password="Slasherbane2!"
+              driverClassName="com.mysql.jdbc.Driver"
+              username="root"
+              password="Slasherbane2!"
+              url="jdbc:mysql://localhost:3306/daren?autoReconnect=false&amp;userSSL=false&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
+
+    <ResourceLink global="jdbc/test" name="jdbc/test" type="javax.sql.DataSource"/>
 </Context >

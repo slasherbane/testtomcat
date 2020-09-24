@@ -5,31 +5,42 @@
  */
 package servlets;
 
+import DAO.Acompte;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 /**
  *
  * @author Benjamin
  */
 @WebServlet(name = "rooting", urlPatterns = {"/rooting"})
-public class rooting extends HttpServlet {
+public class Print extends HttpServlet {
+
+    @PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
+    EntityManager em;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,48 +59,47 @@ public class rooting extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet rooting</title>");            
+            out.println("<title>Servlet rooting</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet rooting at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
 
-Context initCtx = new InitialContext();
-Context envCtx = (Context) initCtx.lookup("java:comp/env");
+            //Connection conn = ds.getConnection(); ;
+            try {
 
-// Look up our data source
-DataSource ds = (DataSource)
-  envCtx.lookup("jdbc/test");
-  Connection conn = ds.getConnection(); ;
-   out.println("Valid conexion ?: )" + conn.isValid(10));
-            try
-                     {
-       
-                    
-                PreparedStatement p =  conn.prepareStatement("select * from acompte");
+                EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
+                em = emf.createEntityManager();
+
+                //   List rs = //em.createNamedQuery("Acompte.findAll").setMaxResults(10).getResultList();
+                List rs = em.createQuery("Select a FROM Acompte a", Acompte.class).setMaxResults(10).getResultList();
+                // List rs = new ArrayList();
+
+                /*PreparedStatement p =  conn.prepareStatement("select * from acompte");
                   
-                ResultSet rs =  p.executeQuery();
-                boolean t;
+                //ResultSet rs =  p.executeQuery();
+             //   boolean t;
+               List ResponseList = new ArrayList<>();
+             
+                
               while( t  = rs.next()){
-                   
+                   ResponseList.add(rs.getString("montantAccorde"));
                     out.println(rs.getString("montantAccorde"));
               }
-                }
-            finally{
-                conn.close();
-                initCtx.close();
+                 */
+                request.setAttribute("acomptes", rs);
+                //  response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+                request.getRequestDispatcher("Print.jsp").forward(request, response);
+
+            } finally {
+
             }
-            
-            
-      
-      response.setHeader("name", "Anupam Sinha");
-   //   RequestDispatcher rd = request.getRequestDispatcher("/other");
-     // rd.forward(request, response);
-    
 
-
-         // response.sendRedirect(request.getContextPath() + "/index.jsp");
+            //   RequestDispatcher rd = request.getRequestDispatcher("/other");
+            // rd.forward(request, response);
+            // response.sendRedirect(request.getContextPath() + "/index.jsp");
         }
     }
 
@@ -108,7 +118,7 @@ DataSource ds = (DataSource)
         try {
             processRequest(request, response);
         } catch (NamingException | SQLException ex) {
-            Logger.getLogger(rooting.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Print.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -126,7 +136,7 @@ DataSource ds = (DataSource)
         try {
             processRequest(request, response);
         } catch (NamingException | SQLException ex) {
-            Logger.getLogger(rooting.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Print.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

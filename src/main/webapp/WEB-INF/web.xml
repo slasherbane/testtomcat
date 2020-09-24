@@ -2,19 +2,21 @@
 <web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <!-- The rest of your web.xml content -->
     <servlet>
-        <servlet-name>rooting</servlet-name>
-        <servlet-class>servlets.rooting</servlet-class>
+        <servlet-name>Print</servlet-name>
+        <servlet-class>servlets.Print</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>other</servlet-name>
-        <servlet-class>servlets.other</servlet-class>
+      <servlet>
+        <servlet-name>Add</servlet-name>
+        <servlet-class>servlets.add</servlet-class>
     </servlet>
+    
+    
     <servlet-mapping>
-        <servlet-name>rooting</servlet-name>
-        <url-pattern>/rtg</url-pattern>
+        <servlet-name>Print</servlet-name>
+        <url-pattern>/Print</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>other</servlet-name>
-        <url-pattern>/other</url-pattern>
+     <servlet-mapping>
+        <servlet-name>Add</servlet-name>
+        <url-pattern>/Add</url-pattern>
     </servlet-mapping>
 </web-app>
