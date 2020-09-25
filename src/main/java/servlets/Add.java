@@ -6,11 +6,20 @@
 package servlets;
 
 import DAO.Acompte;
+import DAO.Soc;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +32,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "NewServlet", urlPatterns = {"/NewServlet"})
 public class Add extends HttpServlet {
-@PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
+
+    @PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
     EntityManager em;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,15 +46,39 @@ public class Add extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
+            em = emf.createEntityManager();
+            Date cure_date = new Date();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
             Acompte a = new Acompte();
-             a.setMontantAccorde((Double) request.getAttribute("Montant"));
-             a.setType((int) request.getAttribute("Type"));
-             em.persist(a);
-             em.flush();
+            a.setSupprime(false);
+            a.setDateCreation(formatter.parse(formatter.format(cure_date)));
+            Soc s = em.createNamedQuery("Soc.findById", Soc.class).setParameter("id", Long.parseLong("134")).getSingleResult();
+            a.setIdSoc(s);
+            a.setMontantAccorde((Double) request.getAttribute("Montant"));
+            a.setType(1);//-> un souci de trnasmition avec le formulaire
+            em.persist(a);
+
+            //em.flush();
+        } catch (Exception e) {
+            System.err.println("ERREUR !");
+            e.printStackTrace();
+            //request.setAttribute("warning", "An error as occur: " + e.getMessage());
+            // request.getRequestDispatcher("Index.jsp").forward(request, null);
+
+        }
+    }
+
+    protected void processJsp(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, ParseException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+
+        } catch (Exception e) {
         }
     }
 
@@ -59,7 +94,11 @@ public class Add extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processJsp(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -73,7 +112,11 @@ public class Add extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (ParseException ex) {
+            Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

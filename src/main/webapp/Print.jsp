@@ -11,10 +11,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Print Page</title>
     </head>
    <body>
-        <nav>  <a href="<%=application.getContextPath()%>/Print">Liste acompte</a></nav>
+        <%@ include file="NAV.jsp" %>
 
         <%
             

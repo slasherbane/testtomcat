@@ -4,7 +4,12 @@
     Author     : Benjamin
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+
  
- <nav>  <a href="<%=application.getContextPath()%>/Print">Liste acompte</a></nav>
+ <nav>  
+     <a href="<%=application.getContextPath()%>/Print">Liste acompte</a>
+     <a href="Add.jsp">Ajout acompte</a>
+ 
+ 
+ </nav>
+ 

@@ -5,18 +5,32 @@
         <servlet-name>Print</servlet-name>
         <servlet-class>servlets.Print</servlet-class>
     </servlet>
-      <servlet>
+    <servlet>
         <servlet-name>Add</servlet-name>
-        <servlet-class>servlets.add</servlet-class>
+        <servlet-class>servlets.Add</servlet-class>
     </servlet>
-    
-    
+    <servlet>
+        <servlet-name>Add</servlet-name>
+        <servlet-class>servlets.Add</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Errors</servlet-name>
+        <servlet-class>servlets.Errors</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Print</servlet-name>
         <url-pattern>/Print</url-pattern>
     </servlet-mapping>
-     <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>Add</servlet-name>
         <url-pattern>/Add</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Errors</servlet-name>
+        <url-pattern>/Errors</url-pattern>
+    </servlet-mapping>
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/Errors</location>
+    </error-page>
 </web-app>
