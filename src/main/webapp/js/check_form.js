@@ -6,22 +6,27 @@
 
 
 
-
+function check_del() {
+    if (document.forms["Delete_acompte"]["selection"].value == "") {
+        alert("Veuillez selectionnez un acompte !");
+        return false;
+    }
+}
 
 function validate_form()
 {
- 
- Montant =    document.forms["Add_acompte"]["Montant"].value;
- Type =    document.forms["Add_acompte"]["Type"].value;
-   if (Montant == "" ||  Type == "" ){
+
+    Montant = document.forms["Add_acompte"]["Montant"].value;
+    Type = document.forms["Add_acompte"]["Type"].value;
+    if (Montant == "" || Type == "") {
         var popup = document.getElementById("warn");
-          popup.classList.toggle("show");
-          return false ;
-   }else{
-       //  alert("Please insert a value in required fields !");
-          return true;
-   }
- 
+        popup.classList.toggle("show");
+        return false;
+    } else {
+        //  alert("Please insert a value in required fields !");
+        return true;
+    }
+
 }
 
 

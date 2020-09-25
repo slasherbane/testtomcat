@@ -5,11 +5,12 @@
 --%>
 
 
- 
- <nav>  
-     <a href="<%=application.getContextPath()%>/Print">Liste acompte</a>
-     <a href="Add.jsp">Ajout acompte</a>
- 
- 
- </nav>
- 
+
+<nav>  
+    <div>
+        <a href="<%=application.getContextPath()%>/Print">Liste acompte</a>
+        <a href="<%=application.getContextPath()%>/Add">Ajout acompte</a>
+        <a href="<%=application.getContextPath()%>/Delete">Suppression acompte</a>
+    </div>
+</nav>
+

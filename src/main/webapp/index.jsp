@@ -12,21 +12,21 @@
 <!DOCTYPE html>
 <html>
     <head>
- <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" type="text/css" href=" ${pageContext.request.contextPath}/css/style.css"">
         <title>Index Page</title>
     </head>
     <body>
-          <%@ include file="NAV.jsp" %>
-          <div name="warn"> 
-          <%
-           Object warn =  request.getAttribute("warning");
-           
-              if (warn  != null){
-                   out.println(warn.toString());
-          }
-              
-          %></div>
+        <%@ include file="NAV.jsp" %>
+        <div name="warn"> 
+            <%
+                Object warn = request.getAttribute("warning");
 
-        <h1>Just an index page</h1>
+                if (warn != null) {
+                    out.println(warn.toString());
+                }
+
+            %></div>
+
+
     </body>
 </html>

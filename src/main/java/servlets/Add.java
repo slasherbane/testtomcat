@@ -19,7 +19,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Benjamin
  */
-@WebServlet(name = "NewServlet", urlPatterns = {"/NewServlet"})
+@WebServlet(name = "Add", urlPatterns = {"/Add"})
 public class Add extends HttpServlet {
 
     @PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
@@ -44,31 +43,12 @@ public class Add extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws java.text.ParseException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ParseException {
-        response.setContentType("text/html;charset=UTF-8");
+
         try (PrintWriter out = response.getWriter()) {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
-            em = emf.createEntityManager();
-            Date cure_date = new Date();
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
-            Acompte a = new Acompte();
-            a.setSupprime(false);
-            a.setDateCreation(formatter.parse(formatter.format(cure_date)));
-            Soc s = em.createNamedQuery("Soc.findById", Soc.class).setParameter("id", Long.parseLong("134")).getSingleResult();
-            a.setIdSoc(s);
-            a.setMontantAccorde((Double) request.getAttribute("Montant"));
-            a.setType(1);//-> un souci de trnasmition avec le formulaire
-            em.persist(a);
-
-            //em.flush();
-        } catch (Exception e) {
-            System.err.println("ERREUR !");
-            e.printStackTrace();
-            //request.setAttribute("warning", "An error as occur: " + e.getMessage());
-            // request.getRequestDispatcher("Index.jsp").forward(request, null);
 
         }
     }
@@ -77,7 +57,21 @@ public class Add extends HttpServlet {
             throws ServletException, IOException, ParseException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
+            em = emf.createEntityManager();
+            Date cure_date = new Date();
+            em.getTransaction().begin();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
+            Acompte a = new Acompte();
+            a.setSupprime(false);
+            a.setDateCreation(formatter.parse(formatter.format(cure_date)));
+            Soc s = em.createNamedQuery("Soc.findById", Soc.class).setParameter("id", Long.parseLong("134")).getSingleResult();
+            a.setIdSoc(s);
+            a.setMontantAccorde(Double.parseDouble(request.getParameter("Montant")));
+            a.setType(Integer.getInteger(request.getParameter("Type")));//-> un souci de trnasmition avec le formulaire
+            em.persist(a);
+            em.getTransaction().commit();
+            request.getRequestDispatcher("Index.jsp").forward(request, response);
         } catch (Exception e) {
         }
     }
@@ -95,7 +89,7 @@ public class Add extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processJsp(request, response);
+            processRequest(request, response);
         } catch (ParseException ex) {
             Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -113,7 +107,7 @@ public class Add extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processRequest(request, response);
+            processJsp(request, response);
         } catch (ParseException ex) {
             Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
         }

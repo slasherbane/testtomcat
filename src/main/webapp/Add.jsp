@@ -10,8 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href=" ${pageContext.request.contextPath}/css/style.css"">
-
-        <title>JSP Page</title>
+        <title>Add Page</title>
     </head>
     <body>
         <%@ include file="NAV.jsp" %>

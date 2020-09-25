@@ -17,6 +17,10 @@
         <servlet-name>Errors</servlet-name>
         <servlet-class>servlets.Errors</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Delete</servlet-name>
+        <servlet-class>servlets.Delete</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Print</servlet-name>
         <url-pattern>/Print</url-pattern>
@@ -28,6 +32,10 @@
     <servlet-mapping>
         <servlet-name>Errors</servlet-name>
         <url-pattern>/Errors</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Delete</servlet-name>
+        <url-pattern>/Delete</url-pattern>
     </servlet-mapping>
     <error-page>
         <exception-type>java.lang.Exception</exception-type>

@@ -8,6 +8,7 @@ package servlets;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Benjamin
  */
+@WebServlet(name = "Errors", urlPatterns = {"/Errors"})
 public class Errors extends HttpServlet {
 
     /**
@@ -38,7 +40,7 @@ public class Errors extends HttpServlet {
             String servletName = (String) request
                     .getAttribute("javax.servlet.error.servlet_name");
             request.setAttribute("warning", "An error as occur: " + throwable.getMessage() + " " + statusCode + " " + servletName);
-            request.getRequestDispatcher("Index.jsp").forward(request, response);
+            throwable.printStackTrace();
         }
     }
 
