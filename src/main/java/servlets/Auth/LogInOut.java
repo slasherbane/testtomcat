@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package servlets.Auth;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Benjamin
  */
-@WebServlet(name = "Errors", urlPatterns = {"/Errors"})
-public class Errors extends HttpServlet {
+public class LogInOut extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,14 +31,17 @@ public class Errors extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            Throwable throwable = (Throwable) request
-                    .getAttribute("javax.servlet.error.exception");
-            Integer statusCode = (Integer) request
-                    .getAttribute("javax.servlet.error.status_code");
-            String servletName = (String) request
-                    .getAttribute("javax.servlet.error.servlet_name");
-            request.setAttribute("warning", "An error as occur: " + throwable.getMessage() + " " + statusCode + " " + servletName);
-            throwable.printStackTrace();
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LogInOut</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet LogInOut at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+            request.getRequestDispatcher("/Print").forward(request, response);
         }
     }
 

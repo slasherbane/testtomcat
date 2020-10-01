@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <!-- The rest of your web.xml content -->
+    <filter>
+        <filter-name>JwtFilter</filter-name>
+        <filter-class>servlets.filter.JwtFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JwtFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>Print</servlet-name>
-        <servlet-class>servlets.Print</servlet-class>
+        <servlet-class>servlets.pages.Print</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Add</servlet-name>
-        <servlet-class>servlets.Add</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Add</servlet-name>
-        <servlet-class>servlets.Add</servlet-class>
+        <servlet-class>servlets.pages.Add</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Errors</servlet-name>
-        <servlet-class>servlets.Errors</servlet-class>
+        <servlet-class>servlets.error.Errors</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Delete</servlet-name>
-        <servlet-class>servlets.Delete</servlet-class>
+        <servlet-class>servlets.pages.Delete</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogInOut</servlet-name>
+        <servlet-class>servlets.Auth.LogInOut</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Print</servlet-name>
@@ -37,8 +45,16 @@
         <servlet-name>Delete</servlet-name>
         <url-pattern>/Delete</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogInOut</servlet-name>
+        <url-pattern>/LogInOut</url-pattern>
+    </servlet-mapping>
     <error-page>
-        <exception-type>java.lang.Exception</exception-type>
+        <exception-type>java.lang.Throwable</exception-type>
         <location>/Errors</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/Error.jsp</location>
     </error-page>
 </web-app>

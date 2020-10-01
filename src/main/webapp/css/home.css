@@ -1,0 +1,66 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30 sept. 2020, 10:22:01
+    Author     : Benjamin
+*/
+
+body {
+    color: #CFBB69;
+}
+.decorative-bar{
+
+    height:100px;
+    width: 100%;
+    background-color:#A21414;
+    z-index: 10;
+    border: 1px solid #8e0010;
+}
+
+
+#p-navbar{
+    background-color: darkred;
+
+}
+
+.decorative-half-circle{
+    height:100px;
+    width: 200px;
+    background-color:#A21414;
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+    z-index: -10;
+
+
+    margin-right: auto;
+    margin-left: auto;
+    opacity: 85%;
+
+}
+
+
+
+.enter-button{
+     height:100px;
+    width: 100px;
+    transform: rotate(45deg);
+    background-color: grey;
+    margin-right: 25%;
+    margin-left: 75%;
+    display: flex;
+    animation: 3s infinite alternate pop;
+ 
+}
+
+@keyframes pop {
+  from { height:100px;
+    width: 100px;
+   border-radius:100%;}
+  to   {  height:100px;
+    width: 100px;
+ 
+  }
+}

@@ -3,36 +3,28 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package servlets.error;
 
-import DAO.Acompte;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.NamingException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import javax.faces.webapp.FacesServlet;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+ 
 
 /**
  *
  * @author Benjamin
  */
-@WebServlet(name = "rooting", urlPatterns = {"/rooting"})
-public class Print extends HttpServlet {
+@WebServlet(name = "Errors", urlPatterns = {"/Errors"})
+public class Errors extends HttpServlet {
 
-    @PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
-    EntityManager em;
+ 
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,31 +36,24 @@ public class Print extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException, NamingException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet rooting</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet rooting at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-
-            try {
-                EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
-                em = emf.createEntityManager();
-                List rs = em.createNamedQuery("Acompte.findAll", Acompte.class).setMaxResults(30).getResultList();
-                request.setAttribute("acomptes", rs);
-                request.getRequestDispatcher("Print.jsp").forward(request, response);
-
-            } finally {
-
-            }
-
+            Throwable throwable = (Throwable) request
+                    .getAttribute("javax.servlet.error.exception");
+            Integer statusCode = (Integer) request
+                    .getAttribute("javax.servlet.error.status_code");
+            String servletName = (String) request
+                    .getAttribute("javax.servlet.error.servlet_name");
+            //request.setAttribute("warning", "An error as occur: " +throwable.getClass().toString());
+ 
+              //request.getServletContext().addServlet("Errors", Errors.class).addMapping("Error.jsp");
+  
+ 
+           
+ 
+           
+ 
         }
     }
 
@@ -84,11 +69,7 @@ public class Print extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(Print.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -102,11 +83,7 @@ public class Print extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (NamingException | SQLException ex) {
-            Logger.getLogger(Print.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**

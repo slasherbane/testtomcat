@@ -3,22 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+package servlets.pages;
 
 import DAO.Acompte;
-import DAO.Soc;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,11 +27,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Benjamin
  */
-@WebServlet(name = "Add", urlPatterns = {"/Add"})
-public class Add extends HttpServlet {
+@WebServlet(name = "rooting", urlPatterns = {"/rooting"})
+public class Print extends HttpServlet {
 
-    @PersistenceContext(unitName = "TEST", type = PersistenceContextType.EXTENDED)
-    EntityManager em;
+ 
+    private  EntityManager em ;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,36 +41,39 @@ public class Add extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * @throws java.text.ParseException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
-
-        try (PrintWriter out = response.getWriter()) {
-
-        }
-    }
-
-    protected void processJsp(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ParseException {
+            throws ServletException, IOException, SQLException, NamingException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet rooting</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet rooting at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+
+            try {
+            //    EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
+               // em = emf.createEntityManager();
+               EntityManagerFactory emf = Persistence.createEntityManagerFactory("TEST");
             em = emf.createEntityManager();
-            Date cure_date = new Date();
-            em.getTransaction().begin();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss");
-            Acompte a = new Acompte();
-            a.setSupprime(false);
-            a.setDateCreation(formatter.parse(formatter.format(cure_date)));
-            Soc s = em.createNamedQuery("Soc.findById", Soc.class).setParameter("id", Long.parseLong("134")).getSingleResult();
-            a.setIdSoc(s);
-            a.setMontantAccorde(Double.parseDouble(request.getParameter("Montant")));
-            a.setType(Integer.getInteger(request.getParameter("Type")));//-> un souci de trnasmition avec le formulaire
-            em.persist(a);
-            em.getTransaction().commit();
-            request.getRequestDispatcher("Index.jsp").forward(request, response);
-        } catch (Exception e) {
+
+               List rs = em.createNamedQuery("Acompte.findAll", Acompte.class).setMaxResults(30).getResultList();
+                request.setAttribute("acomptes", rs);
+                out.println("wut?");
+                request.getRequestDispatcher("Print.jsp").forward(request, response);
+               
+            }
+            
+            catch(Exception e) {
+                    e.printStackTrace();
+            }
+
         }
     }
 
@@ -90,8 +91,8 @@ public class Add extends HttpServlet {
             throws ServletException, IOException {
         try {
             processRequest(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NamingException | SQLException ex) {
+            Logger.getLogger(Print.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -107,9 +108,9 @@ public class Add extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            processJsp(request, response);
-        } catch (ParseException ex) {
-            Logger.getLogger(Add.class.getName()).log(Level.SEVERE, null, ex);
+            processRequest(request, response);
+        } catch (NamingException | SQLException ex) {
+            Logger.getLogger(Print.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
